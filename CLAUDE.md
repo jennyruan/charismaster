@@ -23,30 +23,47 @@ Captured 2026-05-31 mid-hackathon by Terminal A on Jenny's instruction.
 
 ---
 
-## 0.5 Product framing — LOCKED two-mode framework
+## 0.5 Product framing — LOCKED three-mode framework
 
-> **CharisMaster: learn it, or let us do it for you.**
-> Two modes from one engine. Same Gemini multimodal call (text/audio/link in →
-> reference-grounded one-pager out), different output template per mode.
+> **CharisMaster: Coach Me, Save Me, or Ship Me.**
+> Three modes from one engine. Same Gemini multimodal call
+> (text/audio/link/repo/design-doc in → reference-grounded **graphical**
+> one-pager out), different output template per mode. User can iteratively
+> refine the output by throwing in additional references + prompts.
 
 | Mode | User intent | Output | Time horizon |
 |---|---|---|---|
-| 🎓 **Coach** (how-to) | "I want to get better at X" | `How to master [skill]` one-pager — principles + drills + watch-next | Weeks/months |
-| 🎯 **Cheatsheet** (script) | "I have [X] tomorrow, help" | `[Performance], [date]` one-pager — opening, beats with timestamps, close, comeback lines | Tonight |
+| 🎓 **Coach Me** | "I want to get better at X" | Graphical one-pager: principles drawn from masters, traps to avoid, drills, watch-next | Weeks/months |
+| 🎯 **Save Me** | "I have [X] tomorrow, help" | Graphical one-pager: opening, beats with timestamps, close + ask, comeback lines | Tonight |
+| 🚀 **Ship Me** | "I built [X], help me launch it" | Graphical one-pager: product name, builder info, description, feature list, product link, use guidance | Launch day |
 
-Both outputs are single-page graphic markdown documents, adaptive across phone /
-tablet / desktop, designed to be screenshotted and shared (Coach mode) or folded
-and pocketed (Cheatsheet mode). The mode toggle is the first interaction on the
-input page.
+**Unifying through-line:** CharisMaster helps you **land your message** —
+whether you're learning the form (Coach), performing it (Save), or launching
+something new into the world (Ship).
+
+**Both outputs are GRAPHICAL one-pagers** (Nano Banana flourishes + structured
+layout). The user picks one of several screen-size variants on the output page
+(phone / tablet / desktop / print) and the layout reflows accordingly. The
+screen-size toggle is explicit UI on the output page, not just CSS responsive
+behavior — the user chooses which size they want for their use case (Save Me
+mode often = print or phone; Coach Me mode often = desktop or shareable image).
+
+**Iterative refinement:** the output page includes a "refine" panel. The user
+can paste another reference URL, upload more material, or add a free-text prompt
+("make the close more aggressive", "drop the third trap"). Hitting refine runs
+another Gemini call with the previous output + the new input as context, and
+re-renders.
 
 The output spec for both modes lives in `docs/output-spec.md`. Terminal A pastes
 this into the AI Studio Build prompt's `<output>` section. Do NOT diverge from
 the spec without updating it in `docs/output-spec.md` first so all terminals
 see the change in git.
 
-Locked 2026-05-31 12:25 by Jenny. Supersedes the original single-mode
-"side-by-side report" framing in `README.md` and `docs/ai-studio-build-rules.md`
-§4. README will be updated by Terminal A on next pass.
+Locked 2026-05-31 12:25 by Jenny; updated 12:42 (mode rename + graphical for
+both + screen-size toggle + iterative refinement). Supersedes the original
+single-mode "side-by-side report" framing in `README.md` and
+`docs/ai-studio-build-rules.md` §4. README will be updated by Terminal A on
+next pass.
 
 ---
 
