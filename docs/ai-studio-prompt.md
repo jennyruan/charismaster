@@ -483,3 +483,100 @@ Generate the complete Next.js 15 app. Include:
   environment, or do we need to set it manually in the Cloud Run console?
 
 Flag answers in `STATUS.md` as you learn them so B/C/D see them on sync.
+
+---
+
+## 5. Iteration log (post initial paste)
+
+The §2 prompt is the v1 build. Below are subsequent iterations Jenny made via
+Studio's chat panel. These are RECORDED here so:
+- If Studio's session is lost, we can replay them in order to rebuild.
+- Other terminals can see the current state of the app without re-asking Jenny.
+
+Append new iterations to the bottom. Each entry: timestamp, scope, the literal
+prompt Jenny pasted, and a one-line outcome note (filled in after Studio
+finishes that iteration).
+
+### 5.1 — 2026-05-31 ~13:50 PT — Save Me universal-input flow
+
+**Scope:** Save Me page only. Replace the multi-field form with a single
+universal-input zone, auto-extract structured fields via Gemini, surface
+extracted context as editable chips + a multi-select "task list" of work
+CharisMaster will do, then generate.
+
+**Prompt pasted into Studio chat panel:**
+
+```
+On the Save Me page only, replace the current multi-field form with a two-step universal-input flow. Do NOT change Coach Me or Ship Me.
+
+STEP 1 — Universal input
+One large drag-and-drop input zone. Accepts: free text, URLs, images, files (PDF, .pptx, .md, .txt). Single primary button below: "Extract & plan".
+
+On click, POST to a NEW route /api/extract-tasks with the dumped blob (text + uploads multipart). The route calls Gemini multimodal (gemini-3-flash-preview) and returns:
+{
+  extracted_context: {
+    occasion, when, time_limit_seconds, outcome,
+    audience: [{name, bio}], past_performance_url,
+    form: "pitch"|"ted_talk"|"standup"|"sales_call",
+    slides_summary
+  },
+  suggested_tasks: [{ id, label, why, default_selected: boolean }]
+}
+Any field Gemini cannot extract from the blob comes back as null/empty — never hallucinated.
+
+STEP 2 — Review & select
+Replace the input zone with two stacked panels:
+(A) Extracted context as editable chips ("⏱ 60s", "🎯 VC meetings", "👥 Sarah Park + 2 more", "🎤 Pitch"). Click to edit inline. "Not detected: + Add field" row.
+(B) Suggested tasks as a checkbox list. Always-on (pre-checked): draft 15s opening, outline 3-5 timed beats, write close+ask, prepare 2-3 comebacks. Conditional: research panelists (if names), slide talking points (if deck), Q&A prep (if agenda), pre-performance ritual (default off).
+
+Two buttons: Secondary "Re-extract with a note", Primary "GENERATE MY SAVE ME ONE-PAGER" → POST /api/analyze with { extracted_context, selected_task_ids }. Save Me system prompt includes ONLY sections for selected tasks; Zod schema branches accordingly.
+
+Keep existing Save Me styling, screen-size toggle, Refine panel, Share button, version history. No mock data — empty state with original blob + "Try again" if extraction returns nothing.
+```
+
+**Outcome:** Superseded before Studio finished — Jenny pivoted to the
+Project + multi-task architecture in §5.2 instead. This prompt was NOT
+pasted on its own.
+
+### 5.2 — 2026-05-31 ~14:00 PT — Project entity + mode workspaces + per-output refine
+
+**Scope:** Full app refactor. Introduce Project entity that owns multimodal
+context + an AI-generated user-editable task list. Each mode page accepts
+BOTH ad-hoc inputs (existing per-mode quick-input forms, kept verbatim) AND
+imported tasks from any project. Each input source generates one output
+card in a grid; parallel Gemini calls. Per-card refine + per-card version
+history + per-card screen-size toggle + per-card share. /report/[id] route
+removed; outputs live inside the mode workspace.
+
+**Prompt pasted into Studio chat panel** (the full refactor brief):
+
+```
+Major refactor — introduce a Project entity that owns context + tasks, but make every mode page work standalone OR with imported project tasks. Keep all existing visual styling (Tailwind defaults, mode accent colors, screen-size toggle, share button) — change only the data flow and page structure.
+
+[Data model: Project { id, name, context: { text, links, files }, tasks, createdAt }; Task { id, projectId, label, description, sourceRefs, createdBy }; InputSource = { kind:"adhoc", mode, formData } | { kind:"task", projectId, taskId }; Output { id, mode, inputSource, status, versions:[{id, payload, refinePrompt, generatedAt}], currentVersionId }.
+
+Routes: / (home: projects + 3-card mode launcher); /project/[id] (context editor + task list + mode launcher); /coach-me, /save-me, /ship-me (mode workspaces with input-sources panel + outputs grid).
+
+Mode workspace: "🆕 Add ad-hoc input" (opens existing per-mode quick-input form) + "📥 Import task from project" (project dropdown → task multi-select). Each becomes a chip in pending list. "Generate N outputs" → parallel Gemini calls → cards stream in. Each card has inline refine textarea + version dropdown + per-card screen-size toggle + per-card share.
+
+API: POST /api/project, POST /api/project/[id]/context, POST /api/project/[id]/extract-tasks (Gemini multimodal → suggested tasks merged with user tasks), POST /api/project/[id]/task, POST /api/generate (body: { mode, inputSources }, Promise.all → N parallel Gemini calls), POST /api/refine (per-output, appends version).
+
+Preserve: 3 mode-specific output layouts + Zod schemas, screen-size toggle (now per-card), share (per-card), per-mode quick-input forms (now the "ad-hoc" option), Tailwind defaults, mode accent colors, "Made with CharisMaster" footer, no mock data.
+
+Remove: /report/[id] route, global Refine panel, global version history sidebar.
+
+Task extraction prompt: suggest 4-8 discrete tasks specific to this project's context (not generic). If referenced input is missing, surface it explicitly.
+
+Keep file count under 30. In-memory store, session-scoped.]
+
+Full text in docs/ai-studio-prompt.md §2 + §5.2 of this file.
+```
+
+(The literal brief Jenny pasted is roughly twice this long — the full text
+is preserved in chat / commit `de53248` follow-up. The bracketed summary
+above is a paste-back-into-Studio-able compression for replay.)
+
+**Outcome:** PENDING — Studio is building as of 2026-05-31 ~14:00 PT.
+Demo script (`docs/demo-script.md`) is calibrated to the v1 single-shot
+flow; will need a rewrite if v2 lands successfully.
+
