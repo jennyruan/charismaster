@@ -53,9 +53,9 @@ real content over polish. The 1-min demo video doesn't show pixel-perfection.
 Multiple Claude terminals open in parallel. To avoid collisions:
 
 **Ownership map** (update this section as work shifts):
-- **Terminal A (Opus, scaffold + Gemini):** `package.json`, `next.config.ts`, `tsconfig.json`, `Dockerfile`, `app/layout.tsx`, `app/page.tsx`, `app/api/analyze/route.ts`, `lib/gemini.ts`, `lib/schema.ts`, `lib/reference-corpus.ts`, `.env.example`
+- **Terminal A (Opus, scaffold + Gemini):** `package.json`, `next.config.ts`, `tsconfig.json`, `Dockerfile`, `app/layout.tsx`, `app/page.tsx`, `app/api/analyze/route.ts`, `lib/gemini.ts`, `lib/schema.ts`, `lib/reference-corpus.ts`, `lib/report-store.ts`, `.env.example`
 - **Terminal B:** TBD — claim a slice in this file before editing
-- **Terminal C:** TBD
+- **Terminal C (Opus, report UI + submission docs):** `app/report/[id]/page.tsx`, `docs/one-pager.md`, `docs/demo-script.md`, `docs/team-intro-script.md`
 
 **Protocol:**
 - Before editing any file, `git pull --rebase` + check `git status`.
