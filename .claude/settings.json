@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/jennyr/code/experiments/charismaster/.claude/sync-hook.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
