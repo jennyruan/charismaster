@@ -5,6 +5,24 @@ Read `README.md` first for the locked one-page design.
 
 ---
 
+## 0. Build target: Google AI Studio (READ FIRST — supersedes ownership map)
+
+We build through **Google AI Studio Build mode** (`aistudio.google.com/apps`),
+NOT a hand-rolled Next.js app. Studio scaffolds the app, wires Gemini, and
+deploys to Cloud Run. Claude Code's job is to produce the **one-shot build
+prompt** + supporting design assets that get pasted into Studio.
+
+**Read `docs/ai-studio-build-rules.md` before doing anything else.** It
+contains the canonical prompt anatomy, per-terminal impact (A and B pivot;
+C and D mostly unchanged), and the build-prompt skeleton to fill in.
+
+If you were about to hand-write `package.json`, `app/page.tsx`, `lib/gemini.ts`,
+`/api/analyze`, Dockerfile, or `scripts/deploy.sh` — **stop** and read §0 first.
+
+Captured 2026-05-31 mid-hackathon by Terminal A on Jenny's instruction.
+
+---
+
 ## 1. Push to main (overrides global Branch Safety)
 
 This is a hackathon repo with multiple Claude terminals contributing in
