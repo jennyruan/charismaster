@@ -23,6 +23,33 @@ Captured 2026-05-31 mid-hackathon by Terminal A on Jenny's instruction.
 
 ---
 
+## 0.5 Product framing — LOCKED two-mode framework
+
+> **CharisMaster: learn it, or let us do it for you.**
+> Two modes from one engine. Same Gemini multimodal call (text/audio/link in →
+> reference-grounded one-pager out), different output template per mode.
+
+| Mode | User intent | Output | Time horizon |
+|---|---|---|---|
+| 🎓 **Coach** (how-to) | "I want to get better at X" | `How to master [skill]` one-pager — principles + drills + watch-next | Weeks/months |
+| 🎯 **Cheatsheet** (script) | "I have [X] tomorrow, help" | `[Performance], [date]` one-pager — opening, beats with timestamps, close, comeback lines | Tonight |
+
+Both outputs are single-page graphic markdown documents, adaptive across phone /
+tablet / desktop, designed to be screenshotted and shared (Coach mode) or folded
+and pocketed (Cheatsheet mode). The mode toggle is the first interaction on the
+input page.
+
+The output spec for both modes lives in `docs/output-spec.md`. Terminal A pastes
+this into the AI Studio Build prompt's `<output>` section. Do NOT diverge from
+the spec without updating it in `docs/output-spec.md` first so all terminals
+see the change in git.
+
+Locked 2026-05-31 12:25 by Jenny. Supersedes the original single-mode
+"side-by-side report" framing in `README.md` and `docs/ai-studio-build-rules.md`
+§4. README will be updated by Terminal A on next pass.
+
+---
+
 ## 1. Push to main (overrides global Branch Safety)
 
 This is a hackathon repo with multiple Claude terminals contributing in
@@ -73,7 +100,7 @@ Multiple Claude terminals open in parallel. To avoid collisions:
 **Ownership map** (update this section as work shifts):
 - **Terminal A (Opus, scaffold + Gemini):** `package.json`, `next.config.ts`, `tsconfig.json`, `Dockerfile`, `app/layout.tsx`, `app/page.tsx`, `app/api/analyze/route.ts`, `lib/gemini.ts`, `lib/schema.ts`, `lib/reference-corpus.ts`, `lib/report-store.ts`, `.env.example`
 - **Terminal B (Opus, deploy + smoke test):** `scripts/deploy.sh`, `scripts/smoke.sh`, `scripts/setup.sh`
-- **Terminal C (Opus, report UI + submission docs):** `app/report/[id]/page.tsx`, `docs/one-pager.md`, `docs/demo-script.md`, `docs/team-intro-script.md`
+- **Terminal C (Opus, output spec + submission docs):** `docs/output-spec.md` (two-mode one-pager layout spec for AI Studio prompt — supersedes hand-written `app/report/[id]/page.tsx` per §0 + §0.5), `docs/one-pager.md`, `docs/demo-script.md`, `docs/team-intro-script.md`
 - **Terminal D (Opus, reference corpus research + submission form):** `docs/reference-corpus.md` (verified YouTube URLs per mode for A to paste into `lib/reference-corpus.ts`), `docs/submission-form-answers.md` (pre-filled hackathon form). Read-only on everything else.
 
 **Protocol:**
